@@ -7,11 +7,11 @@
   gather_facts: false
 
   tasks:
-      - name: copy ../src/<filename>
+      - name: copy ../src/take_photo.py
         copy:
-            src: ../src/<filename>
+            src: ../src/take_photo.py
             dest: /home/pi
 
-  post_tasks:
-      - name: reboot PIs
-        reboot:
+  # post_tasks:
+  #     - name: reboot PIs
+  #       reboot:
