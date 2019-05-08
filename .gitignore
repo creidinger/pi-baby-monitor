@@ -105,4 +105,4 @@ venv.bak/
 
 
 # ansible
-.retry
+*.retry

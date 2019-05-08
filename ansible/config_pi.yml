@@ -1,7 +1,7 @@
 ---
 # File to config rasberry pis
 # you need to copy your ssh keys to the pi in order for this to work
-# ansible-playbook -i inventories/hosts -u pi config_rpi.yml
+# ansible-playbook -i inventories/hosts -u pi config_pi.yml
 - hosts: pis
   become: yes
   gather_facts: true
@@ -32,11 +32,11 @@
   tasks:
     # - name: Disable GUI and enable CLI auto-login
     #   become: yes
-    #   command: raspi-config nonint do_boot_behaviour 
+    #   command: raspi-config nonint do_boot_behaviour
 
     - name: Enable Camera
       become: yes
-      command: raspi-config nonint do_camera 1
+      command: raspi-config nonint do_camera 0
 
     - name: Install python 3.7
       apt:
@@ -47,6 +47,17 @@
       become: yes
       command: pip3 install RPI.GPIO
 
+    # https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2
+    - name: Download files to install lcd screen
+      get_url:
+          url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/adafruit-pitft.sh
+          dest: /home/pi/
+
+    - name: set permission for Downloaded files
+      become: yes
+      command: chmod +x adafruit-pitft.sh
+    # now this must be run manually:
+    # sudo ./adafruit-pitft.sh
 
     # - name: copy <filename> to ~/
     #   copy:
