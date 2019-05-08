@@ -7,10 +7,39 @@
   gather_facts: false
 
   tasks:
+      - name: make the ~/src directory
+        file:
+          path: /home/pi/src
+          state: directory
+          mode: 0777
+
+      - name: make the ~/src/files directory
+        file:
+          path: /home/pi/src/files
+          state: directory
+          mode: 0777
+
+      - name: make the ~/src/flask-stream-example directory
+        file:
+          path: /home/pi/src/flask-stream-example
+          state: directory
+          mode: 0777
+
       - name: copy ../src/take_photo.py
         copy:
             src: ../src/take_photo.py
-            dest: /home/pi
+            dest: /home/pi/src
+
+      - name: copy ../src/record_video.py
+        copy:
+            src: ../src/record_video.py
+            dest: /home/pi/src
+
+      - name: Install flask video streaming repo
+        git:
+          repo: 'https://github.com/miguelgrinberg/flask-video-streaming'
+          dest: /home/pi/src/flask-stream-example
+          clone: yes
 
   # post_tasks:
   #     - name: reboot PIs

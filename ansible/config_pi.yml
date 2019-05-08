@@ -34,18 +34,36 @@
     #   become: yes
     #   command: raspi-config nonint do_boot_behaviour
 
-    - name: Enable Camera
+    - name: Enable PI Camera
       become: yes
       command: raspi-config nonint do_camera 0
 
-    - name: Install python 3.7
+    - name: make the ~/src directory
+      file:
+        path: /home/pi/src
+        state: directory
+        mode: 0777
+
+    - name: make the ~/src/files directory
+      file:
+        path: /home/pi/src/files
+        state: directory
+        mode: 0777
+
+    - name: Install python 3.x
       apt:
         name: python3
         state: present
 
+    # to control GPIO pins
     - name: Install RPI.GPIO
       become: yes
       command: pip3 install RPI.GPIO
+
+    # Python web framework
+    - name: Install Flask
+      become: yes
+      command: pip3 install flask
 
     # https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2
     - name: Download files to install lcd screen
@@ -58,11 +76,6 @@
       command: chmod +x adafruit-pitft.sh
     # now this must be run manually:
     # sudo ./adafruit-pitft.sh
-
-    # - name: copy <filename> to ~/
-    #   copy:
-    #     src: ../src/<filename>
-    #     dest: /home/pi/
 
     - name: copy .bash_profile to ~/
       copy:
