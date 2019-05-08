@@ -1,0 +1,17 @@
+---
+# File to sen src files to Pi
+# You need to copy your ssh keys to the pi in order for this to work
+# ansible-playbook -i inventories/hosts -u pi deploy.yml
+- hosts: pis
+  become: yes
+  gather_facts: false
+
+  tasks:
+      - name: copy ../src/<filename>
+        copy:
+            src: ../src/<filename>
+            dest: /home/pi
+
+  post_tasks:
+      - name: reboot PIs
+        reboot:

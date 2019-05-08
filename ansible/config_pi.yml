@@ -1,0 +1,64 @@
+---
+# File to config rasberry pis
+# you need to copy your ssh keys to the pi in order for this to work
+# ansible-playbook -i inventories/hosts -u pi config_rpi.yml
+- hosts: pis
+  become: yes
+  gather_facts: true
+
+
+  pre_tasks:
+    - name: Set Timezone to America/New_York
+      timezone:
+        name: America/New_York
+
+    - name: Install system packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - wget
+        - nano
+        - curl
+        - rsync
+        - vim
+        - git
+        - zip
+
+
+  # Some config borrowed from here:
+  # Source: https://raspberrypi.stackexchange.com/questions/28907/how-could-one-automate-the-raspbian-raspi-config-setup
+  tasks:
+    # - name: Disable GUI and enable CLI auto-login
+    #   become: yes
+    #   command: raspi-config nonint do_boot_behaviour 
+
+    - name: Enable Camera
+      become: yes
+      command: raspi-config nonint do_camera 1
+
+    - name: Install python 3.7
+      apt:
+        name: python3
+        state: present
+
+    - name: Install RPI.GPIO
+      become: yes
+      command: pip3 install RPI.GPIO
+
+
+    # - name: copy <filename> to ~/
+    #   copy:
+    #     src: ../src/<filename>
+    #     dest: /home/pi/
+
+    - name: copy .bash_profile to ~/
+      copy:
+        src: .bash_profile
+        dest: /home/pi/
+
+
+  post_tasks:
+    - name: reboot PIs
+      reboot:
