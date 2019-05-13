@@ -7,17 +7,10 @@
   gather_facts: false
 
   tasks:
-      - name: make the ~/src directory
-        file:
-          path: /home/pi/src
-          state: directory
-          mode: 0777
-
-      - name: make the ~/src/files directory
-        file:
-          path: /home/pi/src/files
-          state: directory
-          mode: 0777
+      - name: copy ../src for testing
+        copy:
+            src: ../src
+            dest: /home/pi
 
       - name: make the ~/src/flask-stream-example directory
         file:
@@ -25,15 +18,10 @@
           state: directory
           mode: 0777
 
-      - name: copy ../src/take_photo.py
+      - name: Copy site files to /var/www/pi-baby-monitor
         copy:
-            src: ../src/take_photo.py
-            dest: /home/pi/src
-
-      - name: copy ../src/record_video.py
-        copy:
-            src: ../src/record_video.py
-            dest: /home/pi/src
+            src: ../src/public_html
+            dest: /var/www/pi-baby-monitor
 
       - name: Install flask video streaming repo
         git:

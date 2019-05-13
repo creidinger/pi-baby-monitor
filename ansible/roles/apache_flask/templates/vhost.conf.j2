@@ -1,0 +1,16 @@
+<VirtualHost *>
+    ServerName {{ servername }}
+    ServerAlias {{ serveralias }}
+
+    Redirect / {{ base_url }}
+
+    WSGIDaemonProcess pi-baby-monitor user=user1 group=group1 threads=5
+    WSGIScriptAlias / {{ doc_root }}/baby-monitor.wsgi
+
+    <Directory {{ doc_root }}>
+        WSGIProcessGroup pi-baby-monitor
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
+</VirtualHost>
