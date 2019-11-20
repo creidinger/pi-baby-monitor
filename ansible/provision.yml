@@ -25,11 +25,19 @@
         - vim
         - git
         - zip
+        - python3
+        # system tests
+        - sysbench
+        - stress-ng
 
 
   # Some config borrowed from here:
   # Source: https://raspberrypi.stackexchange.com/questions/28907/how-could-one-automate-the-raspbian-raspi-config-setup
   tasks:
+    #####################
+    # raspi-config
+    #####################
+
     # - name: Disable GUI and enable CLI auto-login
     #   become: yes
     #   command: raspi-config nonint do_boot_behaviour
@@ -38,6 +46,19 @@
       become: yes
       command: raspi-config nonint do_camera 0
 
+    # to control GPIO pins
+    - name: Install RPI.GPIO
+      become: yes
+      command: pip3 install RPI.GPIO
+
+    - name: copy .bash_profile to ~/
+      copy:
+        src: .bash_profile
+        dest: /home/pi/
+
+    #####################
+    # files
+    #####################
     - name: make the ~/src directory
       file:
         path: /home/pi/src
@@ -50,16 +71,9 @@
         state: directory
         mode: 0777
 
-    - name: Install python 3.x
-      apt:
-        name: python3
-        state: present
-
-    # to control GPIO pins
-    - name: Install RPI.GPIO
-      become: yes
-      command: pip3 install RPI.GPIO
-
+    #####################
+    # other
+    #####################
     # Python web framework
     - name: Install Flask
       become: yes
@@ -76,11 +90,6 @@
       command: chmod +x adafruit-pitft.sh
     # now this must be run manually:
     # sudo ./adafruit-pitft.sh
-
-    - name: copy .bash_profile to ~/
-      copy:
-        src: .bash_profile
-        dest: /home/pi/
 
 
   post_tasks:
