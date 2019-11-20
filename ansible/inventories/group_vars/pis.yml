@@ -1,0 +1,6 @@
+---
+doc_root: /var/www/pi-baby-monitor/public_html
+
+servername: monitor.home
+serveralias: monitor.home
+base_url: http://monitor.home
