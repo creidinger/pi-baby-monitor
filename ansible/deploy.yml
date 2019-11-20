@@ -12,22 +12,27 @@
             src: ../src
             dest: /home/pi
 
-      - name: make the ~/src/flask-stream-example directory
-        file:
-          path: /home/pi/src/flask-stream-example
-          state: directory
-          mode: 0777
+      # - name: make the ~/src/flask-stream-example directory
+      #   file:
+      #     path: /home/pi/src/flask-stream-example
+      #     state: directory
+      #     mode: 0777
 
-      - name: Copy site files to /var/www/pi-baby-monitor
+      # - name: Copy site files to /var/www/pi-baby-monitor
+      #   copy:
+      #       src: ../src/public_html
+      #       dest: /var/www/pi-baby-monitor
+
+      - name: copy ../src/test.py
         copy:
-            src: ../src/public_html
-            dest: /var/www/pi-baby-monitor
+            src: ../src/take_photo.py
+            dest: /home/pi/src
 
-      - name: Install flask video streaming repo
-        git:
-          repo: 'https://github.com/miguelgrinberg/flask-video-streaming'
-          dest: /home/pi/src/flask-stream-example
-          clone: yes
+      # - name: Install flask video streaming repo
+      #   git:
+      #     repo: 'https://github.com/miguelgrinberg/flask-video-streaming'
+      #     dest: /home/pi/src/flask-stream-example
+      #     clone: yes
 
   # post_tasks:
   #     - name: reboot PIs
