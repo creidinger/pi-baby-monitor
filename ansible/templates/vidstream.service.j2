@@ -8,7 +8,7 @@
 # sudo systemctl enable myscript.service
 #
 Description=videostream
-Documentation=https://git.ogilvychww.com/ferring/ferring-idweek-server
+Documentation=https://github.com/creidinger/pi-video-stream-to-browser
 Wants=network-online.target
 After=network-online.target
 
@@ -16,7 +16,7 @@ After=network-online.target
 PermissionsStartOnly=true
 
 ExecStart=/usr/bin/python3 stream_video.py
-WorkingDirectory=/home/pi/src/server
+WorkingDirectory=/home/pi/src
 
 
 # restart settings

@@ -64,12 +64,16 @@
         path: /home/pi/src
         state: directory
         mode: 0777
+        owner: pi
+        group: pi
 
     - name: make the ~/src/files directory
       file:
         path: /home/pi/src/files
         state: directory
         mode: 0777
+        owner: pi
+        group: pi
 
     - name: Set permissions on /src child items
       become: yes
