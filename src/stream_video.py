@@ -6,13 +6,12 @@ from threading import Condition
 from http import server
 
 PAGE="""\
-<html>
+<html lang="en">
 <head>
 <title>picamera MJPEG streaming demo</title>
 </head>
 <body>
-<h1>PiCamera MJPEG Streaming Demo</h1>
-<img src="stream.mjpg" width="640" height="480" />
+<img src="stream.mjpg" width="1280" height="720" />
 </body>
 </html>
 """
