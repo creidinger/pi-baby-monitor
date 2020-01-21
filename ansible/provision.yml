@@ -1,7 +1,7 @@
 ---
 # File to config rasberry pis
 # you need to copy your ssh keys to the pi in order for this to work
-# ansible-playbook -i inventories/hosts -u pi config_pi.yml
+# ansible-playbook -i inventories/hosts -u pi provision.yml
 - hosts: pis
   become: yes
   gather_facts: true
