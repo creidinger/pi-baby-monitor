@@ -7,33 +7,23 @@
   gather_facts: false
 
   tasks:
-      - name: copy ../src for testing
-        copy:
-            src: ../src
-            dest: /home/pi
+    - name: Copy ../src files to pi
+      copy:
+        src: ../src
+        dest: /home/pi
+        owner: pi
+        group: pi
+        mode: '0770'
 
-      # - name: make the ~/src/flask-stream-example directory
-      #   file:
-      #     path: /home/pi/src/flask-stream-example
-      #     state: directory
-      #     mode: 0777
+    - name: Set permissions on ../src child items
+      become: yes
+      file:
+        path: /home/pi/src
+        recurse: yes
+        owner: pi
+        group: pi
+        mode: '0770'
 
-      # - name: Copy site files to /var/www/pi-baby-monitor
-      #   copy:
-      #       src: ../src/public_html
-      #       dest: /var/www/pi-baby-monitor
-
-      - name: copy ../src/test.py
-        copy:
-            src: ../src/take_photo.py
-            dest: /home/pi/src
-
-      # - name: Install flask video streaming repo
-      #   git:
-      #     repo: 'https://github.com/miguelgrinberg/flask-video-streaming'
-      #     dest: /home/pi/src/flask-stream-example
-      #     clone: yes
-
-  # post_tasks:
-  #     - name: reboot PIs
-  #       reboot:
+  post_tasks:
+    - name: reboot PIs
+      reboot:

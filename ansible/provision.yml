@@ -71,25 +71,40 @@
         state: directory
         mode: 0777
 
-    #####################
-    # other
-    #####################
-    # Python web framework
-    - name: Install Flask
+    - name: Set permissions on /src child items
       become: yes
-      command: pip3 install flask
+      file:
+        path: /home/pi/src
+        recurse: yes
+        owner: pi
+        group: pi
+        mode: '0770'
+        recurse: yes
 
-    # https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/easy-install-2
-    - name: Download files to install lcd screen
-      get_url:
-          url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/adafruit-pitft.sh
-          dest: /home/pi/
+    #####################
+    # server source config
+    #####################
+    # https://linuxconfig.org/how-to-create-systemd-service-unit-in-linux
+    # https://www.raspberrypi.org/documentation/linux/usage/systemd.md
+    # commands
+    # sudo systemctl start myscript.service
+    # sudo systemctl stop myscript.service
+    - name: Copy vidstream.service file to /etc/systemd/system
+      template:
+        src: vidstream.service.j2
+        dest: /etc/systemd/system/vidstream.service
+        mode: '0770'
 
-    - name: set permission for Downloaded files
-      become: yes
-      command: chmod +x adafruit-pitft.sh
-    # now this must be run manually:
-    # sudo ./adafruit-pitft.sh
+    # Used to allow autostart of service on pi
+    # No you no longer have to run this command.
+    # sudo systemctl enable myscript.service
+    - name: Allow vidstream.service autostart by createing a symbolic link
+      file:
+        src: /etc/systemd/system/vidstream.service
+        dest: /etc/systemd/system/multi-user.target.wants/vidstream.service
+        owner: root
+        group: root
+        state: link
 
 
   post_tasks:
